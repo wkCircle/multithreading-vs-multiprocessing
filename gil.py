@@ -1,5 +1,6 @@
 # gil.py
 # Adapt script from https://www.youtube.com/watch?v=mvxR6_G4yLQ by 2MinutesPy as some code no longer works
+# this file works only for python 3.13+, and is best for free-threaded build python for GIL vs No-GIL benchmarking
 
 import sys
 import math

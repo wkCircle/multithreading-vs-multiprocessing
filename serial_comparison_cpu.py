@@ -35,5 +35,5 @@ if __name__ == "__main__":
 
     marker = time.time()
     multithreading(cpu_heavy, range(n_jobs), 4)
-    print("Multithreading spent", time.time() - marker)
+    print("Multiprocessing spent", time.time() - marker)
 

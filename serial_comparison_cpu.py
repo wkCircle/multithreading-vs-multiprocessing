@@ -1,9 +1,15 @@
 import time
-from concurrent.futures import ThreadPoolExecutor
+from concurrent.futures import ThreadPoolExecutor, ProcessPoolExecutor
 
 
 def multithreading(func, args, workers):
     with ThreadPoolExecutor(workers) as ex:
+        res = ex.map(func, args)
+    return list(res)
+
+
+def multiprocessing(func, args, workers):
+    with ProcessPoolExecutor(workers) as ex:
         res = ex.map(func, args)
     return list(res)
 
@@ -15,11 +21,19 @@ def cpu_heavy(x):
         count += i
 
 
-n_jobs = 4
+if __name__ == "__main__":
+    n_jobs = 4
 
-marker = time.time()
-for i in range(n_jobs): cpu_heavy(i)
-print("Serial spent", time.time() - marker)
-marker = time.time()
-multithreading(cpu_heavy, range(n_jobs), 4)
-print("Multithreading spent", time.time() - marker)
+    marker = time.time()
+    for i in range(n_jobs):
+        cpu_heavy(i)
+    print("Serial spent", time.time() - marker)
+    
+    marker = time.time()
+    multithreading(cpu_heavy, range(n_jobs), 4)
+    print("Multithreading spent", time.time() - marker)
+
+    marker = time.time()
+    multithreading(cpu_heavy, range(n_jobs), 4)
+    print("Multithreading spent", time.time() - marker)
+

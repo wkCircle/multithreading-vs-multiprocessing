@@ -1,6 +1,5 @@
 import time
 from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor
-
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -18,7 +17,6 @@ def multiprocessing(func, args, workers):
 
 
 def live_tracker(x):
-    print('I am', x)
     reference = time.time()
     l = []
     for i in range(10**6):
@@ -37,10 +35,16 @@ def visualize_live_runtimes(results, title):
     plt.yticks(ytks, ['job {}'.format(exp) for exp in ytks])
     plt.xlabel("Seconds")
     plt.title(title)
+    # Set finer x-axis ticks
+    xmin, xmax = plt.xlim()
+    plt.xticks(np.arange(0, xmax, 0.01))
 
 
-plt.subplot(1, 2, 1)
-visualize_live_runtimes(multithreading(live_tracker, range(4), 4), "Multithreading")
-plt.subplot(1, 2, 2)
-visualize_live_runtimes(multiprocessing(live_tracker, range(4), 4), "Multiprocessing")
-plt.show()
+if __name__ == "__main__":
+    fig, axs = plt.subplots(2, 1, sharex=True)
+    plt.sca(axs[0])
+    visualize_live_runtimes(multithreading(live_tracker, range(4), 4), "Multithreading")
+    plt.sca(axs[1])
+    visualize_live_runtimes(multiprocessing(live_tracker, range(4), 4), "Multiprocessing")
+    plt.show()
+
